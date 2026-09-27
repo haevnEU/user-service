@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
+    <head>
+        <meta charset="UTF-8">
+        <title>SSO Selfservice-Portal</title>
+        <link rel="stylesheet" th:href="@{/css/common.css}">
+        <link rel="stylesheet" th:href="@{/css/color.css}">
+        <link rel="stylesheet" th:href="@{/css/self-service.css}">
+    </head>
+    <body>
+
+        <header class="top-navbar">
+            <div class="navbar-brand">
+                <span class="brand-title" th:text="${companyName} + ' Selfservice'">Company Selfservice</span>
+                <span class="brand-slogan" th:text="${slogan}">Central Account Directory</span>
+            </div>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn-logout">Abmelden</button>
+            </form>
+        </header>
+
+        <main class="selfservice-wrapper">
+
+            <div th:if="${successMessage}" class="toast toast-success" id="feedbackToast">
+                <span class="toast-icon" style="font-weight: bold; font-size: 1.1rem;">✓</span>
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <div th:if="${errorMessage}" class="toast toast-danger" id="feedbackToast">
+                <span class="toast-icon" style="font-weight: bold; font-size: 1.1rem;">✕</span>
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <div class="welcome-header">
+                <h1>Hallo, <span th:text="${userFirstName}">Benutzer</span>!</h1>
+                <p>Willkommen in deinem zentralen Account-Selfservice. Hier kannst du deine Sicherheits- und Datenschutzeinstellungen verwalten.</p>
+            </div>
+
+            <div class="scroll-container">
+                <div class="options-grid">
+
+                    <div class="option-card password-card">
+                        <div>
+                            <h3>Passwort zurücksetzen</h3>
+                            <p>Fordere einen gesicherten Einmal-Link an, um dein Passwort neu zu setzen. Der Reset-Link wird umgehend an deine verifizierte E-Mail-Adresse gesendet.</p>
+                        </div>
+                        <form th:action="@{/selfservice/password-reset-request}" method="post">
+                            <button type="submit" class="btn-action btn-secondary">Reset-Link per E-Mail senden</button>
+                        </form>
+                    </div>
+
+                    <div class="option-card gdpr-card">
+                        <div>
+                            <h3>DSGVO-Selbstauskunft</h3>
+                            <p>Fordere eine vollständige Kopie aller über dich im Identity Provider gespeicherten Daten an (Art. 15 DSGVO). Der Export wird generiert und manipulationssicher an deine verifizierte E-Mail-Adresse gesendet.</p>
+                        </div>
+                        <form th:action="@{/selfservice/gdpr-request}" method="post">
+                            <button type="submit" class="btn-action btn-gdpr">Auskunft per E-Mail anfordern</button>
+                        </form>
+                    </div>
+
+                    <div class="option-card admin-card" sec:authorize="hasRole('ADMIN')">
+                        <div>
+                            <h3>Benutzerverwaltung</h3>
+                            <p>Verwaltung der synchronisierten Unternehmenskonten, Zuweisung globaler SSO-Rollen (Admin/Entwickler) sowie Einsicht in aktive Kontosperren und Offboarding-Daten.</p>
+                        </div>
+                        <a th:href="@{/users}" class="btn-action btn-primary">Verwaltung öffnen</a>
+                    </div>
+
+                    <div class="option-card dev-card" sec:authorize="hasRole('DEVELOPER')">
+                        <div>
+                            <h3>Anwendungsverwaltung</h3>
+                            <p>Konfiguration verbundener OIDC-Clients und OAuth2-Applikationen. Hier kannst du neue Client-IDs, Secrets, Scopes und Redirect-URIs für deine Systemlandschaft verwalten.</p>
+                        </div>
+                        <a th:href="@{/applications}" class="btn-action btn-teal">Anwendungen öffnen</a>
+                    </div>
+
+                    <div class="option-card gdpr-card-audit" sec:authorize="hasRole('GDPR_AUDIT')">
+                        <div>
+                            <h3>DSGVO Audit</h3>
+                            <p>Unveränderliche System-Protokolle und Revisionsnachweise für Datenexporte gemäß Art. 5 Abs. 2 DSGVO.</p>
+                        </div>
+                        <a th:href="@{/users/audit-log}" class="btn-action btn-gdpr-audit">Protokolle einsehen</a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const toast = document.getElementById('feedbackToast');
+            if (toast) {
+                const dismissToast = () => {
+                    toast.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(40px)";
+                    setTimeout(() => toast.remove(), 300);
+                };
+                const autoHideTimer = setTimeout(dismissToast, 10000);
+                toast.addEventListener('click', () => {
+                    clearTimeout(autoHideTimer);
+                    dismissToast();
+                });
+            }
+        </script>
+    </body>
+</html>

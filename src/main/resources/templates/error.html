@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title th:text="${companyName} + ' - Fehler'"></title>
+        <link href="/css/color.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        <link href="/css/access-denied-layout.css" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="login-container">
+            <div class="brand-side">
+                <div class="logo-placeholder">
+                    <img alt="Logo" th:src="@{/images/logo.svg}">
+                </div>
+                <h1 th:text="${companyName}"></h1>
+                <p th:text="${slogan}"></p>
+            </div>
+
+            <div class="form-side">
+                <div class="login-box">
+                    <div class="error-icon">⚠️</div>
+                    <h2>Etwas ist schiefgelaufen</h2>
+                    <p id="error-message">Die angeforderte Seite konnte nicht gefunden werden oder Ihre Sitzung ist
+                        abgelaufen. Bitte versuchen Sie es erneut.</p>
+
+                    <a class="btn-submit" href="/login">Zurück zum Login</a>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

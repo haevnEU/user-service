@@ -1,0 +1,253 @@
+/* Container & Layout */
+main {
+    padding: 40px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h2 {
+    font-size: 1.8rem;
+    color: var(--color-brand-primary);
+    margin: 0 0 8px 0;
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+.btn-add-app {
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* --- TABELLEN-CARD LAYOUT --- */
+.table-card {
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border);
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.app-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: fixed;
+}
+
+.app-table th,
+.app-table td {
+    padding: 12px 14px;
+    vertical-align: middle;
+    white-space: normal;
+    word-break: break-all;
+}
+
+/* --- OPTIMIERTE BREITEN FÜR 6 SPALTEN --- */
+.app-table th:nth-child(1), .app-table td:nth-child(1) {
+    width: 14%;
+}
+
+/* Optionen */
+.app-table th:nth-child(2), .app-table td:nth-child(2) {
+    width: 18%;
+}
+
+/* Anwendungsname */
+.app-table th:nth-child(3), .app-table td:nth-child(3) {
+    width: 18%;
+}
+
+/* Maintainer */
+.app-table th:nth-child(4), .app-table td:nth-child(4) {
+    width: 30%;
+}
+
+/* Client-ID (Vergrößert) */
+.app-table th:nth-child(5), .app-table td:nth-child(5) {
+    width: 13%;
+}
+
+/* Erstellt am */
+.app-table th:nth-child(6), .app-table td:nth-child(6) {
+    width: 7%;
+}
+
+/* Status */
+.app-table th {
+    background-color: var(--color-brand-primary);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-brand-accent);
+}
+
+.app-table td {
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-dark);
+    font-size: 0.85rem;
+}
+
+.app-table tr:last-child td {
+    border-bottom: none;
+}
+
+.app-table tbody tr:hover {
+    background-color: var(--color-bg-hover);
+}
+
+/* Optionen-Zelle */
+.options-cell {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.options-cell .btn-action {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* Typo */
+.app-name {
+    font-weight: 600;
+}
+
+.crypto-code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+}
+
+.secret-code {
+    color: var(--color-text-muted);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 40px !important;
+}
+
+/* --- NATIVES DIALOG POP-UP (MODAL) STYLING --- */
+.app-modal {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 24px;
+    width: 500px;
+    max-width: 90vw;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-bg-card);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Blur/Abducklungseffekt hinter dem Pop-up */
+.app-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--color-brand-primary);
+    font-size: 1.2rem;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+}
+
+.btn-close:hover {
+    color: var(--color-text-dark);
+}
+
+.detail-group {
+    margin-bottom: 16px;
+}
+
+.detail-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-text-dark);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.uri-list {
+    margin: 0;
+    padding-left: 20px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--color-text-dark);
+}
+
+/* Flex-Layout für die Checkbox-Reihen */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap; /* Verhindert das Ineinanderschieben auf kleinen Bildschirmen */
+    gap: 24px; /* Großzügiger Abstand zwischen den Elementen */
+    margin-top: 8px;
+    padding: 5px 0;
+}
+
+/* Einzelnes Checkbox-Element als Container */
+.checkbox-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Abstand zwischen Checkbox-Häkchen und Labeltext */
+    font-size: 0.95rem;
+    color: var(--color-text-dark, #2d3748);
+    cursor: pointer;
+    user-select: none; /* Verhindert Textmarkierung beim schnellen Klicken */
+}
+
+/* Strikte Trennung von nativem Input-Styling im Layout */
+.checkbox-item input[type="checkbox"] {
+    width: 16px !important; /* Überschreibt eventuelle "width: 100%" aus dem globalen CSS */
+    height: 16px !important;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkbox-item span {
+    font-weight: 500;
+    white-space: nowrap; /* Blockiert unerwünschte Zeilenumbrüche mitten im Wort */
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>SSO Client Registrierung</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #f4f6f8; padding: 20px 0;" width="100%">
+            <tr>
+                <td align="center">
+
+                    <table border="0" cellpadding="0" cellspacing="0" maxWidth="600" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" width="100%">
+
+                        <tr>
+                            <td style="background-color: #1a365d; padding: 30px; text-align: center; border-bottom: 4px solid #48bb78;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px;">
+                                    SSO Anwendung registriert
+                                </h1>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 30px; color: #2d3748; line-height: 1.6;">
+                                <p style="margin-top: 0; font-size: 1rem;">Hallo <span th:text="${maintainer}"></span>,
+                                </p>
+                                <p style="font-size: 0.95rem;">eine neue Anwendung wurde erfolgreich im zentralen
+                                    <strong>Identity Provider</strong> registriert. Unten findest du die
+                                    OIDC-Konfigurationsdaten für deine Anwendung.</p>
+
+                                <table border="0" cellpadding="8" cellspacing="0" style="margin: 20px 0; background-color: #f8fafc; border-radius: 6px; border: 1px solid #edf2f7; font-size: 0.9rem;" width="100%">
+                                    <tr>
+                                        <td style="font-weight: 600; color: #4a5568;" width="35%">Anwendungsname:</td>
+                                        <td style="color: #1a365d; font-weight: 600;" th:text="${appName}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #4a5568;">Verantwortlich:</td>
+                                        <td style="font-family: monospace;" th:text="${maintainer}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600; color: #4a5568;">Client-ID:</td>
+                                        <td style="font-family: monospace; color: #2d3748; word-break: break-all;" th:text="${clientId}"></td>
+                                    </tr>
+                                </table>
+
+                                <div style="margin: 25px 0; padding: 20px; background-color: #fffaf0; border-left: 4px solid #dd6b20; border-radius: 4px;">
+                                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #dd6b20; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">
+                                        ⚠️ WICHTIG: Client-Secret (API-Key)
+                                    </label>
+                                    <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: #7b341e;">Behandle diesen
+                                        Schlüssel wie ein Passwort. Er wird im System verschlüsselt hinterlegt und kann
+                                        im UI nicht erneut eingesehen werden:</p>
+                                    <div style="background-color: #1a202c; color: #f7fafc; padding: 12px; border-radius: 4px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.9rem; word-break: break-all; letter-spacing: 0.5px;" th:text="${clientSecret}"></div>
+                                </div>
+
+                                <!-- Sicherheitshinweis bezüglich Modifikationen -->
+                                <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #e2e8f0; font-size: 0.9rem; color: #4a5568;">
+                                    <p style="margin: 0;">
+                                        <strong>🔒 Hinweis zur Sicherheit:</strong> Die erlaubten Redirect-URIs und
+                                        Scopes können nachträglich
+                                        <strong>nicht direkt bearbeitet</strong> werden. Sollten Anpassungen an der
+                                        Konfiguration notwendig sein,
+                                        muss der bestehende Client gelöscht und neu registriert werden.
+                                    </p>
+                                    <p style="margin: 10px 0 0 0; font-size: 0.85rem;">
+                                        Du kannst deine aktiven Registrierungen jederzeit in der zentralen
+                                        <a style="color: #3182ce; text-decoration: underline; font-weight: 500;" th:href="${ssoUrl}">Benutzerverwaltung</a>
+                                        verwalten.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #f7fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; color: #a0aec0; font-size: 0.75rem;">
+                                <p style="margin: 0 0 4px 0;">Zentraler Identity Provider —
+                                    <span th:text="${companyName}"></span> User Service</p>
+                                <p style="margin: 0;">Dies ist eine automatisierte Systembenachrichtigung. Bitte
+                                    antworte nicht direkt auf diese E-Mail.</p>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+    </body>
+</html>

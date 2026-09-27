@@ -1,0 +1,150 @@
+/* ==========================================================================
+   SSO User Service - Application Create CSS (application-create.css)
+   Clean, stabil und resistent gegen globale CSS-Einflüsse
+   ========================================================================== */
+
+/* Main Wrapper Alignment */
+main {
+    padding: 40px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* Form Card Container */
+.form-container {
+    max-width: 750px;
+    width: 100%;
+    background-color: var(--color-bg-card);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Sektions-Titel (z.B. OAuth2 / OIDC Konfiguration) */
+.form-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-brand-primary);
+    margin: 32px 0 16px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--color-bg-hover); /* Dezente Untertrennung */
+}
+
+/* Standard Form-Groups (Block-Layout für Inputs) */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Text-Inputs (Streng abgegrenzt von Checkboxen!) */
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+    background-color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+    outline: none;
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.05); /* Minimaler Fokus-Ring */
+}
+
+/* Hilfstexte unter den Inputs */
+.input-help {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* --- STABILES CHECKBOX LAYOUT (Behebt den Text-Überlagerungsfehler) --- */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 6px;
+    padding: 4px 0;
+}
+
+.checkbox-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Deaktivierte Checkboxen (z.B. openid) */
+.checkbox-item.disabled-checkbox {
+    cursor: not-allowed;  /* Zeigt dem Nutzer sofort, dass hier nichts geht */
+}
+
+.checkbox-item.disabled-checkbox input[type="checkbox"] {
+    pointer-events: none; /* Nur die Checkbox blockiert den Klick */
+    opacity: 0.7;         /* Leicht ausgegrauter Look für den Haken */
+}
+
+.checkbox-item.disabled-checkbox span {
+    color: var(--color-text-muted, #94a3b8); /* Der Text wird dezent eingefärbt */
+}
+
+/* Zwingt die Checkboxen auf feste Maße und überschreibt globale "width: 100%" */
+.checkbox-item input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    flex-shrink: 0; /* Verhindert das Zusammenquetschen des Häkchens */
+}
+
+.checkbox-item span {
+    font-weight: 500;
+    white-space: nowrap; /* Verhindert Zeilenumbruch innerhalb der Scope-Namen */
+}
+
+/* --- FOOTER / ACTIONS --- */
+.form-actions {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.btn-back:hover {
+    color: var(--color-text-dark);
+}

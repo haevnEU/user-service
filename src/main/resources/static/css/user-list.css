@@ -1,0 +1,192 @@
+/* ==========================================================================
+   SSO User Service - Benutzerverwaltung CSS (user-list.css)
+   Verwendet die Variablen aus color.css & Komponenten aus common.css
+   Clean, stabil und bereit für das globale Tooltip-System
+   ========================================================================== */
+
+/* Container & Layout */
+main {
+    padding: 40px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* --- PAGE HEADER --- */
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h2 {
+    font-size: 1.8rem;
+    color: var(--color-brand-primary);
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+/* --- TABELLEN-CARD LAYOUT --- */
+.table-card {
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border);
+    margin-top: 12px;
+
+    /* FIX: Erlaubt globalen Tooltips aus common.css nach oben/links auszubrechen */
+    overflow: visible !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: fixed; /* Zwingt die Tabelle, sich exakt an 100% Breite zu halten */
+}
+
+th, td {
+    padding: 12px 6px; /* Kompakterer vertikaler und horizontaler Standardabstand */
+    vertical-align: middle;
+    white-space: normal;
+    word-break: break-word; /* Bricht z. B. lange E-Mails um, falls nötig */
+}
+
+/* --- PROZENTUALE SPALTENBREITEN (Exakt 100% für 9 Spalten) --- */
+table th:nth-child(1), table td:nth-child(1) { width: 14%; } /* Name */
+table th:nth-child(2), table td:nth-child(2) { width: 18%; } /* E-Mail */
+table th:nth-child(3), table td:nth-child(3) { width: 7%; }  /* 2FA */
+table th:nth-child(4), table td:nth-child(4) { width: 7%; }  /* Aktiv */
+table th:nth-child(5), table td:nth-child(5) { width: 7%; }  /* Gesperrt */
+table th:nth-child(6), table td:nth-child(6) { width: 11%; } /* Beitritt */
+table th:nth-child(7), table td:nth-child(7) { width: 12%; } /* Offboarding */
+table th:nth-child(8), table td:nth-child(8) { width: 14%; } /* Rolle / Zuweisung */
+table th:nth-child(9), table td:nth-child(9) { width: 10%; } /* Aktion (Speichern) */
+
+/* --- STATUS-SPALTEN VERENGERN --- */
+table th:nth-child(3), table td:nth-child(3),
+table th:nth-child(4), table td:nth-child(4),
+table th:nth-child(5), table td:nth-child(5) {
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: center; /* Macht Status-Badges in schmalen Spalten lesbarer */
+}
+
+/* Typografie Innerhalb der Tabelle */
+th {
+    background-color: var(--color-brand-primary); /* Dein tiefes Blau */
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-brand-accent); /* Hellgrüne Trennlinie */
+}
+
+td {
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-dark);
+    font-size: 0.85rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover-Effekte über Zeilen */
+table tbody tr:hover {
+    background-color: var(--color-bg-hover); /* #f8fafc */
+}
+
+/* --- INTERAKTIVE ELEMENTE & CHECKBOXEN --- */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.checkbox-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-item span {
+    font-weight: 500;
+    white-space: nowrap; /* Verhindert Zeilenumbruch der Scope- oder Rollennamen */
+}
+
+input[type="checkbox"] {
+    accent-color: var(--color-brand-primary); /* Färbt den Haken in deinem Blau */
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0; /* Verhindert, dass die Checkbox gestaucht wird */
+}
+
+/* --- SUCHFELD STYLING --- */
+.search-bar-container {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px; /* Begrenzt die Breite auf ein harmonisches Maß */
+}
+
+#userSearchInput:focus {
+    border-color: var(--color-brand-primary);
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1); /* Subtiler blauer Fokus-Ring */
+}
+
+#userSearchInput::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.8;
+}
+
+/* --- SUCHFELD & FILTER LEISTE OPTIMIERUNG --- */
+.filter-row {
+    width: 100%;
+    margin-bottom: 12px; /* Halbiert den Abstand zur Tabelle von 24px auf 12px */
+}
+
+#userSearchInput {
+    width: 100%;
+    min-width: 380px; /* Garantiert, dass der Platzhalter-Text niemals umbricht */
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+/* --- PERFEKTE VERTIKALE ZENTRIERUNG DER FILTER-CHECKBOX --- */
+.filter-toggle-container label {
+    display: inline-flex !important;
+    align-items: center !important; /* Zentriert Checkbox und Text absolut strikt auf der Mittelachse */
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--color-text-dark);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Nutzt die volle Höhe des umschließenden Flex-Containers */
+}
+
+.filter-toggle-container input[type="checkbox"] {
+    margin: 0 !important; /* Entfernt die versteckten Browser-Standardabstände */
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-brand-primary);
+    cursor: pointer;
+    display: inline-block;
+}

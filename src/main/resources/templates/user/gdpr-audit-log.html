@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
+    <head>
+        <meta charset="UTF-8">
+        <title>Compliance Audit-Logs — Admin Control Panel</title>
+        <link rel="stylesheet" th:href="@{/css/common.css}">
+        <link rel="stylesheet" th:href="@{/css/color.css}">
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                background-color: #f8fafc;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+            .admin-wrapper {
+                max-width: 1400px;
+                margin: 40px auto;
+                padding: 0 24px;
+            }
+
+            /* --- HEADER --- */
+            .header-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 32px;
+                border-bottom: 1px solid #e2e8f0;
+                padding-bottom: 24px;
+            }
+            .header-section h1 {
+                color: #0f172a;
+                font-size: 1.8rem;
+                margin: 0 0 6px 0;
+                font-weight: 700;
+            }
+            .header-section p {
+                color: #64748b;
+                margin: 0;
+                font-size: 0.95rem;
+            }
+
+            /* --- SERVERSEITIGE FILTER BAR --- */
+            .filter-card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 20px 24px;
+                margin-bottom: 24px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            .filter-form {
+                display: flex;
+                gap: 16px;
+                align-items: flex-end;
+                flex-wrap: wrap;
+            }
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .form-group label {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: #475569;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .filter-input {
+                padding: 10px 14px;
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                background-color: #ffffff;
+                color: #0f172a;
+                min-width: 180px;
+                box-sizing: border-box;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+            .filter-input:focus {
+                outline: none;
+                border-color: #1e3a8a;
+                box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+            }
+            .btn-filter {
+                background-color: #1e3a8a;
+                color: white;
+                border: none;
+                padding: 10px 24px;
+                font-weight: 600;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                height: 40px;
+                transition: background-color 0.2s;
+            }
+            .btn-filter:hover { background-color: #172554; }
+            .btn-reset {
+                background-color: #f1f5f9;
+                color: #334155;
+                border: 1px solid #cbd5e1;
+                padding: 10px 16px;
+                font-weight: 500;
+                border-radius: 6px;
+                text-decoration: none;
+                font-size: 0.9rem;
+                height: 40px;
+                display: inline-flex;
+                align-items: center;
+                box-sizing: border-box;
+                transition: background-color 0.2s;
+            }
+            .btn-reset:hover { background-color: #e2e8f0; }
+
+            /* --- TABLE STYLE --- */
+            .table-container {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                overflow: hidden;
+            }
+            .audit-table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+                font-size: 0.9rem;
+            }
+            .audit-table th {
+                background-color: #f1f5f9;
+                color: #334155;
+                font-weight: 600;
+                padding: 14px 20px;
+                border-bottom: 1px solid #e2e8f0;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+            }
+            .audit-table td {
+                padding: 14px 20px;
+                border-bottom: 1px solid #e2e8f0;
+                color: #334155;
+            }
+            .audit-table tbody tr:hover { background-color: #f8fafc; }
+
+            /* --- TECH TYPOGRAPHY --- */
+            .timestamp, .ip-text { font-variant-numeric: tabular-nums; color: #475569; font-weight: 500; }
+            .ip-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.85rem; }
+            .mono-id { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 4px 8px; border-radius: 6px; font-size: 0.82rem; color: #0f172a; }
+            .user-info { font-weight: 500; color: #0f172a; }
+
+            /* --- BADGES --- */
+            .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 9999px; font-size: 0.78rem; font-weight: 600; }
+            .badge-success { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+            .badge-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+            .badge-info { background-color: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        </style>
+    </head>
+    <body>
+
+        <div class="admin-wrapper" sec:authorize="hasRole('ADMIN')">
+
+            <div class="header-section">
+                <div>
+                    <h1>DSGVO Audit-Zentrale (Revisionsnachweis)</h1>
+                    <p>Unveränderliche System-Protokolle der Datenexporte gemäß Art. 5 Abs. 2 DSGVO Rechenschaftspflicht.</p>
+                </div>
+                <a th:href="@{/selfservice}" class="btn-back">← Zum Selfservice</a>
+            </div>
+
+            <div class="filter-card">
+                <form th:action="@{/users/audit-log}" method="get" class="filter-form">
+
+                    <div class="form-group" style="flex-grow: 1; min-width: 250px;">
+                        <label for="search">Freitext-Suche</label>
+                        <input type="text" id="search" name="search" th:value="${currentSearch}"
+                                class="filter-input" style="width: 100%;" placeholder="Nach Export-ID, Initiator oder User-ID...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requestedBy">Angefordert von</label>
+                        <select id="requestedBy" name="requestedBy" class="filter-input">
+                            <option value="">Alle Initiatoren</option>
+                            <option th:each="admin : ${distinctRequestedBy}"
+                                    th:value="${admin}"
+                                    th:text="${admin}"
+                                    th:selected="${admin == currentRequestedBy}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventType">Ereignistyp</label>
+                        <select id="eventType" name="eventType" class="filter-input">
+                            <option value="">Alle Ereignisse</option>
+                            <option th:each="type : ${eventTypes}" th:value="${type}" th:text="${type}"
+                                    th:selected="${type.name() == currentEventType}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" class="filter-input">
+                            <option value="">Alle Status</option>
+                            <option th:each="stat : ${auditStatuses}" th:value="${stat}" th:text="${stat}"
+                                    th:selected="${stat.name() == currentStatus}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sort">Reihenfolge (Datum)</label>
+                        <select id="sort" name="sort" class="filter-input" style="min-width: 140px;">
+                            <option value="desc" th:selected="${currentSort == 'desc'}">Neueste zuerst</option>
+                            <option value="asc" th:selected="${currentSort == 'asc'}">Älteste zuerst</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <button type="submit" class="btn-filter">Filtern</button>
+                        <a th:href="@{/users/audit-log}" class="btn-reset">Reset</a>
+                    </div>
+                    <a th:href="@{/users/audit-log/download(search=${currentSearch}, requestedBy=${currentRequestedBy}, eventType=${currentEventType}, status=${currentStatus}, sort=${currentSort})}"
+                            class="btn btn-secondary" style="height: 40px; box-sizing: border-box; display: inline-flex; align-items: center; text-decoration: none;">
+                        🛡️ Als CSV exportieren
+                    </a>
+                </form>
+            </div>
+
+            <div class="table-container">
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th width="16%">Zeitstempel (UTC)</th>
+                            <th width="12%">IP-Adresse</th> <th width="13%">Ereignistyp</th>
+                            <th width="20%">Angefordert von</th>
+                            <th width="20%">Betroffene User-ID</th>
+                            <th width="11%">Export ID</th>
+                            <th width="8%">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="log : ${auditLogs}">
+                            <td class="timestamp" th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td class="ip-text" th:text="${log.ipAddress != null ? log.ipAddress : '—'}"></td>
+                            <td>
+                                <span th:classappend="${log.eventType.name() == 'EXPORT_SENT' ? 'badge badge-success' : 'badge badge-info'}"
+                                        th:text="${log.eventType}"></span>
+                            </td>
+                            <td class="user-info" th:text="${log.requestedBy}"></td>
+                            <td class="user-info" th:text="${log.userId}">PER-002</td>
+                            <td>
+                                <span class="mono-id" th:title="${log.exportId}"
+                                        th:text="${#strings.abbreviate(log.exportId, 11)}"></span>
+                            </td>
+                            <td>
+                                <span th:class="${log.status.name() == 'SUCCESS' ? 'badge badge-success' : 'badge badge-danger'}"
+                                        th:text="${log.status}"></span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(auditLogs)}">
+                            <td colspan="7" style="text-align: center; color: #94a3b8; padding: 48px;">
+                                Keine Einträge gefunden, die den gewählten Kriterien entsprechen.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-wrapper" sec:authorize="!hasRole('ADMIN')" style="text-align: center; padding: 80px 0;">
+            <h2 style="color: #991b1b; font-weight: 700;">403 — Zugriff verweigert</h2>
+            <p style="color: #64748b; margin-top: 8px;">Diese Revisionsdaten sind exklusiv für Auditoren und Administratoren freigegeben.</p>
+            <a th:href="@{/selfservice}" class="btn-back" style="margin-top: 24px; background-color: #1e3a8a; color: white; border: none;">Zurück zum Dashboard</a>
+        </div>
+
+    </body>
+</html>

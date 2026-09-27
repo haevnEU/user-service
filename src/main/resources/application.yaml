@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  thymeleaf:
+    encoding: utf-8
+    servlet:
+      content-type: text/html; charset=UTF-8
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+    user:
+      sender: servies@company.de
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+app:
+  urls:
+    hrworks: "http://localhost:8081" # Placeholder for real HRWorks URL, Testing purpose only
+  branding:
+    company-name: "Haevn"
+    slogan: "SSO Service."
+  gdpr:
+    rights-of-the-data-subject: "Sie haben das Recht auf Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit Ihrer Daten sowie ein Beschwerderecht bei der zuständigen Datenschutz-Aufsichtsbehörde."
+    international-data-transfer: "Ihre personenbezogenen Daten werden ausschließlich auf Servern in Deutschland verarbeitet. Eine Übermittlung an Drittländer (außerhalb der EU bzw. des EWR) oder an internationale Organisationen findet nicht statt."
+    purpose-of-processing: "Bereitstellung und Absicherung des zentralen Identity-Provider-Dienstes (SSO) zur Authentifizierung und Autorisierung im Unternehmen."
+    legal-basis: "Erfüllung des Beschäftigungsverhältnisses gemäß Art. 6 Abs. 1 lit. b DS-GVO / § 26 BDSG."
+    storage-duration: "Die Daten werden für die Dauer des aktiven Beschäftigungsverhältnisses gespeichert und nach dem Ausscheiden im Rahmen gesetzlicher Aufbewahrungsfristen gelöscht."
+    data-recipients: "Kategorien von Empfängern: Autorisierte firmeninterne IT-Anwendungen, an die sich der Benutzer aktiv mittels Single-Sign-On anmeldet."
+    cryptographic-note: "Hinweis zur Datensicherheit: Krypto-Geheimnisse (wie Passwörter oder 2FA-Schlüssel) liegen in unserem System ausschließlich verschlüsselt bzw. unumkehrbar gehasht vor. Aus Sicherheitsgründen werden diese in diesem Export mit '[REDACTED]' maskiert ausgegeben."
+    data-source: "Die Daten wurden im Rahmen der Einrichtung Ihres Mitarbeiter-Zugangs direkt bei Ihnen, Dem Personalwesen oder durch die interne IT-Administration erhoben."
+    data-processing:
+      automated-decision-making: "Es findet keine automatisierte Entscheidungsfindung einschließlich Profiling gemäß Art. 22 DS-GVO statt."
+      processed-data-categories:
+        - "UUID"
+        - "Benutzername"
+        - "Vorname"
+        - "Nachname"
+        - "Abteilungen"
+        - "Rollen"
+        - "Kontostatus"
+        - "Mehrfaktor-Authentifizierungsstatus"
+        - "Anmelde- und Sicherheitsinformationen"
+      retention-policy: "Die Daten werden für die Dauer des Beschäftigungsverhältnisses gespeichert. Nach Beendigung des Beschäftigungsverhältnisses werden die Daten gemäß den geltenden gesetzlichen und betrieblichen Aufbewahrungsfristen gelöscht oder anonymisiert."
+      recipients:
+        - "Unternehmensinterne Anwendungen mit Single-Sign-On-Anbindung"
+        - "Autorisierte Administratoren der IT-Abteilung"
+        - "Personalabteilung (soweit für die Benutzerverwaltung erforderlich)"

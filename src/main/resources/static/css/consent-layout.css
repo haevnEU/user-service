@@ -1,0 +1,78 @@
+.client-app-info {
+    background-color: #f8fafc;
+    border: 1px solid var(--color-border);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.client-icon {
+    font-size: 1.5rem;
+}
+
+.client-name {
+    font-weight: 600;
+    color: #334155;
+}
+
+.scope-list {
+    margin-bottom: 30px;
+}
+
+.scope-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.scope-item:last-child {
+    border-bottom: none;
+}
+
+.scope-check {
+    color: #16a34a;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.scope-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.scope-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.button-group {
+    display: flex;
+    gap: 16px;
+}
+
+.btn-deny {
+    background-color: var(--color-secondary-bg);
+    color: #64748b;
+    border: 1px solid var(--color-secondary-border);
+}
+
+.btn-deny:hover {
+    background-color: #e2e8f0;
+    color: #334155;
+}
+
+.btn-allow {
+    background-color: var(--color-brand-primary);
+    color: white;
+}
+
+.btn-allow:hover {
+    background-color: var(--color-brand-primary-hover);
+}

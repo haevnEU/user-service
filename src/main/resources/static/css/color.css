@@ -1,0 +1,34 @@
+:root {
+    /* Brand & Core */
+    --color-brand-primary: rgb(20, 30, 102);
+    --color-brand-primary-hover: #141e66;
+    --color-brand-accent: rgb(117, 251, 138);
+
+    /* Backgrounds & Components */
+    --color-bg-main: #f5f7fa;
+    --color-bg-card: #ffffff;
+    --color-bg-hover: #f8fafc;
+    --color-bg-muted: #f1f5f9;
+    --color-border: #e2e8f0;
+    --color-border-input: #cbd5e1;
+
+    /* Text */
+    --color-text-main: #333333;
+    --color-text-dark: #1e293b;
+    --color-text-muted: #64748b;
+    --color-text-body-gray: #475569;
+
+    /* Badges & Actions */
+    --color-success-bg: rgba(117, 251, 138, 0.25);
+    --color-success-text: #0b260a;
+    --color-success-border: rgba(117, 251, 138, 0.6);
+
+    --color-danger-bg: #fee2e2;
+    --color-danger-text: #b91c1c;
+    --color-danger-border: #fca5a5;
+    --color-danger-hover: #fecdd3;
+
+    --color-secondary-bg: #f1f5f9;
+    --color-secondary-text: #475569;
+    --color-secondary-border: #cbd5e1;
+}

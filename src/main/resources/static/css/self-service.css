@@ -1,0 +1,219 @@
+    /* --- GLOBAL LAYOUT FIX (Ergänzt für fixen Viewport) --- */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Verhindert das Scrollen der gesamten Seite */
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- NAVBAR (Fester Anker) --- */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0; /* Verhindert, dass der Header gestaucht wird */
+}
+.navbar-brand {
+    display: flex;
+    flex-direction: column;
+}
+.brand-title {
+    color: var(--color-brand-primary, #1a365d);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+.brand-slogan {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-top: 2px;
+}
+.logout-form {
+    margin: 0;
+}
+.btn-logout {
+    background: none;
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-logout:hover {
+    background-color: #f8fafc;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+/* --- MAIN WRAPPER (Verwaltet den Viewport) --- */
+.selfservice-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hält den inneren Bereich stabil */
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* --- WELCOME HEADER (Feststehend im Wrapper) --- */
+.welcome-header {
+    margin-bottom: 30px;
+    text-align: center;
+    flex-shrink: 0; /* Verhindert Stauchung des Texts */
+}
+.welcome-header h1 {
+    color: var(--color-brand-primary, #0f172a);
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+.welcome-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* --- SCROLL CONTAINER (NUR dieser Bereich scrollt!) --- */
+.scroll-container {
+    flex-grow: 1;
+    overflow-y: auto; /* Aktiviert das vertikale Scrollen exakt hier */
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 4px 12px 24px 4px; /* Platz für Schatten und Scrollbar */
+    box-sizing: border-box;
+}
+
+/* --- 2x2 GRID --- */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+}
+.option-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    box-sizing: border-box;
+}
+.option-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* --- FARBLICHE SEITENSTREIFEN --- */
+.option-card.password-card { border-left: 4px solid #64748b; }
+.option-card.gdpr-card { border-left: 4px solid #d97706; }
+    .option-card.gdpr-card-audit { border-left: 4px solid #d93006; }
+
+.option-card.admin-card { border-left: 4px solid #1e3a8a; }
+.option-card.dev-card { border-left: 4px solid #0d9488; }
+
+.option-card h3 {
+    margin-top: 0;
+    color: var(--color-brand-primary, #0f172a);
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+.option-card p {
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.btn-primary { background-color: #1e3a8a; color: white; }
+.btn-primary:hover { background-color: #172554; }
+.btn-secondary { background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+.btn-secondary:hover { background-color: #e2e8f0; }
+    .btn-teal { background-color: #0d9488; color: white; }
+    .btn-teal:hover { background-color: #0f766e; }
+    .btn-gdpr-audit { background-color: #d93006; color: white; }
+    .btn-gdpr-audit:hover { background-color: #ba2905; }
+    .btn-gdpr { background-color: #d97706; color: white; }
+    .btn-gdpr:hover { background-color: #ba6605; }
+
+/* Schwebende Toasts */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none;
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast-success { background-color: #effbf3; color: #1e7e34; border: 1px solid #c3e6cb; }
+.toast-danger { background-color: #fdf2f2; color: #bd2130; border: 1px solid #f5c6cb; }
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Styling der Scrollbar für einen cleaneren Look */
+.scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+@media (max-width: 768px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+    .top-navbar {
+        padding: 12px 20px;
+    }
+    .selfservice-wrapper {
+        padding: 20px 10px;
+    }
+}

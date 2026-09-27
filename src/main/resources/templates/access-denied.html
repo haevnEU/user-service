@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title th:text="${companyName} + ' - Zugriff verweigert'">Zugriff verweigert</title>
+        <link th:href="@{/css/color.css}" rel="stylesheet">
+        <link th:href="@{/css/common.css}" rel="stylesheet">
+        <link th:href="@{/css/access-denied-layout.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="brand-side">
+                <div class="logo-placeholder">
+                    <img alt="Logo" th:src="@{/images/logo.svg}">
+                </div>
+                <h1 th:text="${companyName}">Company</h1>
+                <p th:text="${slogan}">Zentraler Identitätsdienst.</p>
+            </div>
+            <div class="form-side">
+                <div class="login-box error-card">
+                    <div class="error-icon">🚫</div>
+                    <h2>Zugriff nicht erlaubt</h2>
+
+                    <p style="color: #475569; line-height: 1.5; margin-bottom: 30px;">
+                        Du bist angemeldet als:<br><strong th:text="${#authentication.name}"></strong><br><br>
+                        Der Zugriff auf diese gewählte Resource wurde verweigert.
+                    </p>
+
+                    <form th:action="@{/logout}" method="post" style="display: block; width: 100%;">
+                        <button class="btn-submit" type="submit" style="background-color: #dc2626; border: none; cursor: pointer; width: 100%;">
+                            Abmelden & Account wechseln
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

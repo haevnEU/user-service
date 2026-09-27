@@ -1,0 +1,18 @@
+.error-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Spezifische rote Alarm-Buttons für verweigerten Zutritt */
+.error-card .btn-submit {
+    background-color: #dc2626 !important;
+}
+
+.error-card .btn-submit:hover {
+    background-color: #b91c1c !important;
+}

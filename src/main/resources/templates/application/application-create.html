@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${companyName} + ' - Anwendung registrieren'"></title>
+        <link rel="stylesheet" th:href="@{/css/color.css}"/>
+        <link rel="stylesheet" th:href="@{/css/common.css}"/>
+        <link rel="stylesheet" th:href="@{/css/application-create.css}"/>
+    </head>
+    <body>
+
+        <main>
+            <div class="form-container">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="color: var(--color-brand-primary); margin-bottom: 6px;">Neue Anwendung registrieren</h2>
+                        <p style="color: var(--color-text-muted); font-size: 0.9rem;">Hinterlege einen neuen OIDC-Client im Identity Provider.</p>
+                    </div>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary" style="padding: 8px 14px; font-size: 0.85rem;">Abmelden</button>
+                    </form>
+                </div>
+
+                <form method="post" th:action="@{/applications/new}">
+
+                    <div class="form-section-title">Allgemeine Informationen</div>
+
+                    <div class="form-group">
+                        <label th:for="name">Anwendungsname</label>
+                        <input id="name" name="name" placeholder="z.B. Developer OS, Scooter Frontend" required type="text"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="maintainer">Maintainer E-Mail</label>
+                        <input id="maintainer" name="maintainer" placeholder="vorname.nachname@company.de" required type="email"/>
+                    </div>
+
+                    <div class="form-section-title">OAuth2 / OIDC Konfiguration</div>
+
+                    <div class="form-group">
+                        <label th:for="redirectUrisRaw">Redirect URIs (Callback URLs)</label>
+                        <input id="redirectUrisRaw" name="redirectUrisRaw" placeholder="http://localhost:3000/login/oauth2/code/sso, http://myapp.test/callback"
+                                required type="text"/>
+                        <span class="input-help">Mehrere URLs mit Komma trennen. Unabdingbar für Authorization Code Grant.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="postLogoutRedirectUrisRaw">Post-Logout Redirect URIs</label>
+                        <input id="postLogoutRedirectUrisRaw" name="postLogoutRedirectUrisRaw" placeholder="http://localhost:3000/logged-out"
+                                type="text"/>
+                        <span class="input-help">Wohin soll nach dem RP-Initiated Logout weitergeleitet werden? (Optional, mit Komma trennen)</span>
+                    </div>
+
+                    <div class="form-section-title">Scopes & Grant Types</div>
+
+                    <div class="form-group">
+                        <label>Erlaubte Scopes</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item disabled-checkbox tooltip-top" data-tooltip="Zwingend für OpenID Connect. Dieser Basis-Scope kann für OIDC-Clients nicht deaktiviert werden.">
+                                <input checked name="scopes" type="checkbox" value="openid" th:checked="true" tabindex="-1"/>
+                                <span>openid</span>
+                            </div>
+
+                            <label class="checkbox-item tooltip-top" data-tooltip="Gewährt Zugriff auf Profil-Metadaten wie Vorname, Nachname und bevorzugter Benutzername.">
+                                <input checked name="scopes" type="checkbox" value="profile"/> <span>profile</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Ermöglicht das Auslesen der verifizierten primären E-Mail-Adresse des Nutzers.">
+                                <input checked name="scopes" type="checkbox" value="email"/> <span>email</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Gibt Auskunft über die Abteilungszugehörigkeit (z.B. HR).">
+                                <input checked name="scopes" type="checkbox" value="organization"/> <span>organization</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Liefert die Rollen des Benutzers für die Anwendung mit.">
+                                <input name="scopes" type="checkbox" value="roles"/> <span>roles</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Erlaubt die Prüfung von Sicherheitsstatus wie aktive MFA/2FA oder Passkey-Nutzung.">
+                                <input name="scopes" type="checkbox" value="securityFeatures"/> <span>securityFeatures</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Gibt Zugriff auf Account-Flags wie Sperrungen, temporäre Deaktivierung oder Passwort-Ablauf.">
+                                <input name="scopes" type="checkbox" value="accountStatus"/> <span>accountStatus</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Zugelassene Grant Types</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item tooltip-top" data-tooltip="Sicherster Flow für Web-Apps und SPAs. Tauscht einen Authorization Code gegen Tokens (empfohlen mit PKCE).">
+                                <input checked name="grantTypes" type="checkbox" value="authorization_code"/> <span>authorization_code (Web-Apps / SPA)</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Erlaubt der Anwendung, langlebige Refresh Tokens zu nutzen, um neue Access Tokens ohne Benutzerinteraktion anzufordern.">
+                                <input checked name="grantTypes" type="checkbox" value="refresh_token"/> <span>refresh_token</span>
+                            </label>
+                            <label class="checkbox-item tooltip-top" data-tooltip="Reiner Machine-to-Machine Flow. Die Anwendung authentifiziert sich direkt über Client-ID und Secret (ohne Benutzer-Kontext).">
+                                <input name="grantTypes" type="checkbox" value="client_credentials"/> <span>client_credentials (API / Machine)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a class="btn-back" th:href="@{/applications}">← Zurück zur Übersicht</a>
+                        <button class="btn btn-primary" style="padding: 10px 24px;" type="submit">Anwendung speichern</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+    </body>
+</html>

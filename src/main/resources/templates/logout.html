@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Abmeldung erfolgreich - Company SSO</title>
+        <link href="/css/color.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        <link href="/css/login-layout.css" rel="stylesheet">
+        <style>
+            /* Ergänzende Styles für die Abmelde-Box */
+            .success-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+                display: block;
+            }
+            .hint-text {
+                color: #64748b;
+                font-size: 0.95rem;
+                margin-bottom: 25px;
+                line-height: 1.5;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="brand-side">
+                <div class="logo-placeholder">
+                    <img alt="Logo" th:src="@{/images/logo.svg}">
+                </div>
+                <h1 th:text="${companyName}"></h1>
+                <p th:text="${slogan}"></p>
+            </div>
+
+            <div class="form-side">
+                <div class="login-box" style="text-align: center;">
+                    <span class="success-icon">✅</span>
+                    <h2>Abmeldung erfolgreich</h2>
+                    <p class="hint-text">
+                        Du hast dich sicher vom <span th:text="${companyName}"></span> SSO abgemeldet.<br>
+                        Aus Sicherheitsgründen kannst du dieses Fenster jetzt schließen.
+                    </p>
+
+                    <button class="btn-submit" onclick="closeWindow()" type="button">Jetzt schließen</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function closeWindow() {
+                // Versucht das aktuelle Fenster / den Tab zu schließen
+                window.close();
+
+                // Fallback für Browser, die window.close() via Skript blockieren (Sicherheits-Feature bei einigen Browsern)
+                setTimeout(function() {
+                    alert("Der Tab konnte nicht automatisch geschlossen werden. Bitte schließe das Fenster manuell.");
+                }, 200);
+            }
+        </script>
+    </body>
+</html>

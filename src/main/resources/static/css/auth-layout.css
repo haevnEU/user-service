@@ -1,0 +1,501 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f5f7fa;
+}
+
+.login-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+/* Linke Spalte: 1/3 Company Branding (Deep Blue mit Neon-Grün) */
+.brand-side {
+    flex: 1;
+    background: rgb(20, 30, 102);
+    color: rgb(117, 251, 138);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.logo-placeholder {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Begrenzt den gesamten Container, falls nötig */
+    width: 100%;
+    height: 60px; /* Hier steuerst du, wie hoch die Logo-Box maximal sein darf */
+}
+
+.logo-placeholder img {
+    /* Das Bild passt sich jetzt flexibel der Box an, egal wie riesig die Quelldatei ist */
+    max-width: 100%;
+    max-height: 100%;
+
+    /* Verhindert das Verzerren (Eierkopf-Effekt) und behält die Proportionen bei */
+    object-fit: contain;
+
+    /* Optionaler Schatten, damit es sich vom Hintergrund abhebt */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.btn-disabled {
+    background-color: #cbd5e1 !important; /* Helles Grau */
+    color: #64748b !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.brand-side h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Rechte Spalte: 2/3 Maske (Weißer Arbeitsbereich) */
+.form-side {
+    flex: 2;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 460px;
+    padding: 20px 0;
+}
+
+.login-box h2 {
+    font-size: 1.8rem;
+    color: rgb(20, 30, 102);
+    margin-bottom: 8px;
+}
+
+.login-box p {
+    color: #666666;
+    margin-bottom: 32px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Fehlermeldungen (Error-View / Login-Error Alert) */
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Formular-Elemente */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+.form-group input, .form-group select {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s;
+    background-color: #ffffff;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: rgb(20, 30, 102);
+    box-shadow: 0 0 0 3px rgba(20, 30, 102, 0.1);
+}
+
+.help-text {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 6px;
+}
+
+/* Links (Passwort vergessen, Zurück, etc.) */
+.forgot-password-link, .back-link, .back-to-login {
+    align-self: flex-end;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: rgb(20, 30, 102);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-password-link:hover, .back-link:hover, .back-to-login:hover {
+    color: #141e66;
+    text-decoration: underline;
+}
+
+/* Buttons */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: rgb(20, 30, 102);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #141e66;
+}
+
+/* Checkboxen & Inline-Toggles */
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Mehrfachauswahl: Abteilungen */
+.departments-selector {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    max-height: 140px;
+    overflow-y: auto;
+    padding: 6px 16px;
+}
+
+.department-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.department-option:last-child {
+    border-bottom: none;
+}
+
+.department-option input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.department-option label {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* 2FA Reset Gefahrenzone (Admin Edit) */
+.mfa-reset-box {
+    margin-top: 25px;
+    padding: 16px;
+    background-color: #fff1f2;
+    border: 1px solid #ffe4e6;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.mfa-reset-box p {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    color: #9f1239;
+    line-height: 1.4;
+}
+
+.btn-danger {
+    padding: 10px 16px;
+    background-color: #e11d48;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #be123c;
+}
+
+/* Consent Screen spezifisch */
+.client-app-info {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.client-name {
+    font-weight: 600;
+    color: #334155;
+}
+
+.scope-list {
+    margin-bottom: 30px;
+}
+
+.scope-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.scope-item:last-child {
+    border-bottom: none;
+}
+
+.scope-check {
+    color: #16a34a;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.scope-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.scope-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.button-group {
+    display: flex;
+    gap: 16px;
+}
+
+.btn-consent {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.btn-allow {
+    background-color: rgb(20, 30, 102);
+    color: white;
+}
+
+.btn-allow:hover {
+    background-color: #141e66;
+}
+
+.btn-deny {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-deny:hover {
+    background-color: #e2e8f0;
+    color: #334155;
+}
+
+/* Multi-Step Transitions */
+#two-factor-step, #new-password-step {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   ANPASSUNG: THREE-ZONE FORM LAYOUT (FIX FÜR VOLLE BREITE)
+   ========================================================================== */
+
+/* 1. Heble die Zentrierung der rechten Arbeitsspalte für Formulare aus */
+.login-container .form-side {
+    align-items: stretch !important;  /* Zwingt Header, Content und Footer zum Rand */
+    justify-content: flex-start !important;
+    padding: 0 !important;           /* Das Padding übernehmen jetzt die inneren Zonen */
+    overflow: hidden !important;     /* Hauptcontainer darf nicht mehr komplett scrollen */
+}
+
+/* 2. Zwinge das Formular-Tag, die komplette Fläche zu beanspruchen */
+.form-side form {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+    overflow: hidden !important;
+}
+
+/* Zone 1: Fixierter Header oben */
+.form-header-fixed {
+    flex-shrink: 0;
+    padding: 40px 40px 20px 40px;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+/* Zone 2: Der scrollbare Mittelteil (Nutzt jetzt 100% Breite) */
+.form-content-scrollable {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 30px 40px !important;
+    width: 100% !important;
+}
+
+/* Zone 3: Fixierte Button-Leiste unten */
+.form-footer-fixed {
+    flex-shrink: 0;
+    padding: 20px 40px 30px 40px;
+    border-top: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+/* Formularkomponenten strecken */
+.form-content-scrollable .form-group {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.form-content-scrollable input[type="email"],
+.form-content-scrollable input[type="password"],
+.form-content-scrollable input[type="text"] {
+    width: 100% !important;
+    max-width: none !important;
+    display: block;
+}
+
+/* Modernes, breites Spalten-Grid für die Checkboxen (Rollen & Abteilungen) */
+.form-content-scrollable .departments-selector {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 12px !important;
+    max-height: none !important; /* Hebt das alte max-height: 140px der Loginmaske auf */
+    overflow-y: visible !important;
+    width: 100% !important;
+    padding: 4px 0 !important;
+    border: none !important;     /* Rahmen kommt jetzt clean über die Optionskarten */
+}
+
+.form-content-scrollable .department-option {
+    padding: 12px 16px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    background-color: #f8fafc;
+    transition: all 0.15s ease;
+}
+
+.form-content-scrollable .department-option:hover {
+    border-color: #cbd5e1 !important;
+    background-color: #f1f5f9;
+}
+
+.form-content-scrollable .department-option label {
+    font-size: 0.9rem !important;
+    color: #475569 !important;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .brand-side {
+        flex: none;
+        padding: 30px;
+    }
+
+    .form-side {
+        padding: 0 !important;
+        height: auto !important;
+    }
+
+    .form-header-fixed,
+    .form-content-scrollable,
+    .form-footer-fixed {
+        padding: 20px !important;
+    }
+
+    .mfa-reset-box {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .button-group {
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+}

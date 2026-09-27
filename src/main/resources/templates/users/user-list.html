@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${companyName} + ' - User Management'"></title>
+        <link rel="stylesheet" th:href="@{/css/color.css}"/>
+        <link rel="stylesheet" th:href="@{/css/common.css}"/>
+        <link rel="stylesheet" th:href="@{/css/user-list.css}"/>
+    </head>
+    <body>
+
+        <main>
+            <div th:if="${successMessage}" class="toast toast-success" id="feedbackToast">
+                <span class="toast-icon">✓</span>
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <div th:if="${errorMessage}" class="toast toast-danger" id="feedbackToast">
+                <span class="toast-icon">✕</span>
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <h2 style="margin: 0;">SSO Benutzerverwaltung</h2>
+                        <a th:href="@{/selfservice}" style="text-decoration: none; font-size: 0.85rem; color: #1e3a8a; font-weight: 600;">← Zum Selfservice</a>
+                    </div>
+                    <p style="margin-top: 4px;">Übersicht der synchronisierten Accounts und Konfiguration der SSO-spezifischen Berechtigungen.</p>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <a th:href="@{/selfservice}" class="btn-back">← Zum Selfservice</a>
+
+                    <form th:action="@{/logout}" method="post" style="display: inline; margin: 0;">
+                        <button type="submit" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.85rem;">Abmelden</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="filter-row" style="display: flex; align-items: center; justify-content: flex-start; gap: 24px; margin-bottom: 12px;">
+
+                <div class="search-bar-container" style="flex: 0 1 450px; width: 100%;">
+                    <input type="text" id="userSearchInput" placeholder="Benutzer nach Name oder E-Mail durchsuchen..." autocomplete="off" style="margin-bottom: 0;">
+                </div>
+
+                <div class="filter-toggle-container">
+                    <label for="hideInactiveCheckbox">
+                        <input type="checkbox" id="hideInactiveCheckbox" checked />
+                        <span>Nur aktive Konten anzeigen</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <form method="post" th:action="@{/users/update-roles}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <div class="table-card">
+                    <table id="userTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>E-Mail</th>
+                                <th>2FA Aktiviert</th>
+                                <th>Aktiv</th>
+                                <th>Gesperrt</th>
+                                <th>Beitritt (UTC)</th>
+                                <th>Offboarding</th>
+                                <th>Rolle / Zuweisung</th>
+                                <th>Aktion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}" th:data-active="${user.enabled}">
+                                <td style="font-weight: 600;" th:text="${user.firstName + ' ' + user.lastName}"></td>
+                                <td th:text="${user.mail}"></td>
+
+                                <td>
+                                    <span th:class="${user.twoFactorEnabled} ? 'badge badge-success' : 'badge badge-secondary'"
+                                            th:text="${user.twoFactorEnabled} ? 'Aktiv' : 'Inaktiv'">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:class="${user.enabled} ? 'badge badge-success' : 'badge badge-danger'"
+                                            th:text="${user.enabled} ? 'Aktiv' : 'Inaktiv'">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:class="${!user.accountNonLocked} ? 'badge badge-danger' : 'badge badge-success'"
+                                            th:text="${!user.accountNonLocked} ? 'Gesperrt' : 'Offen'">
+                                    </span>
+                                </td>
+                                <td th:text="${user.registrationDate != null ? user.registrationDate : ''}"></td>
+                                <td>
+                                    <span class="badge badge-success" th:if="${user.offboardingDate == null}">Angestellt</span>
+                                    <span class="badge badge-secondary"
+                                            th:if="${user.offboardingDate != null && user.offboardingDate.isAfter(T(java.time.Instant).now())}"
+                                            th:text="${'Geplant: ' + #temporals.format(user.offboardingDate, 'dd.MM.yyyy', T(java.time.ZoneId).of('UTC'))}">
+                                    </span>
+                                    <span class="badge badge-danger"
+                                            th:if="${user.offboardingDate != null && !user.offboardingDate.isAfter(T(java.time.Instant).now())}"
+                                            th:text="${'Ausgetreten: ' + #temporals.format(user.offboardingDate, 'dd.MM.yyyy', T(java.time.ZoneId).of('UTC'))}">
+                                    </span>
+                                </td>
+
+                                <td style="text-align: left; vertical-align: top;">
+                                    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
+
+                                        <label th:for="'role_dev_' + ${user.id}" class="checkbox-item tooltip-left"
+                                                th:data-tooltip="'Berechtigt zur Registrierung, Konfiguration und technischen Verwaltung von OAuth2-/OIDC-Clientanwendungen. Umfasst keine Berechtigungen zur Einsicht in die Benutzerverwaltung oder zur Modifikation von Identitäten.'">
+                                            <input th:name="'roles_' + ${user.id}"
+                                                    th:checked="${user.roles != null && user.roles.contains('ROLE_DEVELOPER')}"
+                                                    th:id="'role_dev_' + ${user.id}"
+                                                    type="checkbox"
+                                                    value="ROLE_DEVELOPER"/>
+                                            <span>Entwickler</span>
+                                        </label>
+
+                                        <label th:for="'role_admin_' + ${user.id}" class="checkbox-item tooltip-left"
+                                                th:data-tooltip="'Berechtigt zur Einsicht in die systemweit synchronisierten Benutzerdaten sowie zur exklusiven Zuweisung und Modifikation von Funktionsrollen. Eine Bearbeitung der aus dem HR-Quellsystem stammenden Stammdaten ist ausgeschlossen.'">
+                                            <input th:name="'roles_' + ${user.id}"
+                                                    th:checked="${user.roles != null && user.roles.contains('ROLE_ADMIN')}"
+                                                    th:id="'role_admin_' + ${user.id}"
+                                                    type="checkbox"
+                                                    value="ROLE_ADMIN"/>
+                                            <span>Administrator</span>
+                                        </label>
+
+                                        <label th:for="'role_audit_' + ${user.id}" class="checkbox-item tooltip-left"
+                                                th:data-tooltip="'Exklusive Berechtigung zur Einsicht in die unveränderlichen Revisions- und Audit-Protokolle zur Überprüfung der datenschutzrechtlichen Compliance (Rechenschaftspflicht gemäß Art. 5 Abs. 2 DSGVO).'">
+                                            <input th:name="'roles_' + ${user.id}"
+                                                    th:checked="${user.roles != null && user.roles.contains('ROLE_GDPR_AUDIT')}"
+                                                    th:id="'role_audit_' + ${user.id}"
+                                                    type="checkbox"
+                                                    value="ROLE_GDPR_AUDIT"/>
+                                            <span>DSGVO Auditor</span>
+                                        </label>
+
+                                    </div>
+                                </td>
+
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <button name="userId" th:value="${user.id}" class="btn btn-action btn-primary" type="submit" style="padding: 6px 14px; font-size: 0.85rem; margin: 0;">
+                                        Speichern
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${#lists.isEmpty(users)}">
+                                <td colspan="9" style="text-align: center; color: var(--color-text-muted); padding: 30px;">
+                                    Keine Benutzer in der SSO-Datenbank gefunden.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </main>
+
+        <script>
+            const searchInput = document.getElementById('userSearchInput');
+            const hideInactiveCheckbox = document.getElementById('hideInactiveCheckbox');
+
+            function applyFilters() {
+                const searchFilter = searchInput.value.toLowerCase();
+                const shouldHideInactive = hideInactiveCheckbox.checked;
+                const rows = document.querySelectorAll('#userTable tbody tr');
+
+                rows.forEach(row => {
+                    if (row.cells.length === 1) return;
+
+                    const name = row.cells[0].textContent.toLowerCase();
+                    const email = row.cells[1].textContent.toLowerCase();
+                    const isActive = row.getAttribute('data-active') === 'true';
+
+                    const matchesSearch = name.includes(searchFilter) || email.includes(searchFilter);
+                    const matchesStatus = !shouldHideInactive || isActive;
+
+                    if (matchesSearch && matchesStatus) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+
+            searchInput.addEventListener('keyup', applyFilters);
+            hideInactiveCheckbox.addEventListener('change', applyFilters);
+            document.addEventListener('DOMContentLoaded', applyFilters);
+
+            const toast = document.getElementById('feedbackToast');
+            if (toast) {
+                const dismissToast = () => {
+                    toast.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(40px)";
+                    setTimeout(() => toast.remove(), 300);
+                };
+
+                const autoHideTimer = setTimeout(dismissToast, 10000);
+
+                toast.addEventListener('click', () => {
+                    clearTimeout(autoHideTimer);
+                    dismissToast();
+                });
+            }
+        </script>
+    </body>
+</html>

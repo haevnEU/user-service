@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Passwort zurücksetzen — SSO Service</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+        <table border="0" cellpadding="0" cellspacing="0" style="background-color: #f4f6f8; padding: 20px 0;" width="100%">
+            <tr>
+                <td align="center">
+
+                    <table border="0" cellpadding="0" cellspacing="0" maxWidth="600" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);" width="100%">
+
+                        <tr>
+                            <td style="background-color: #1a365d; padding: 30px; text-align: center; border-bottom: 4px solid #48bb78;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px;">
+                                    Passwort zurücksetzen
+                                </h1>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 30px; color: #2d3748; line-height: 1.6;">
+                                <p style="margin-top: 0; font-size: 1rem;">
+                                    Hallo <span th:text="${firstName} + ' ' + ${lastName}"></span>,
+                                </p>
+                                <p style="font-size: 0.95rem;">
+                                    für deinen zentralen Account bei <strong th:text="${companyName}"></strong>
+                                    wurde eine Anfrage zum Zurücksetzen des Passworts gestellt.
+                                </p>
+                                <p style="font-size: 0.95rem;">
+                                    Über den folgenden Button kannst du ein neues, sicheres Passwort für dein Single
+                                    Sign-On (SSO) vergeben:
+                                </p>
+
+                                <table border="0" cellpadding="0" cellspacing="0" style="margin: 25px 0; text-align: center;" width="100%">
+                                    <tr>
+                                        <td>
+                                            <a style="background-color: #1a365d; color: #ffffff; padding: 14px 28px; text-decoration: none; font-weight: 600; border-radius: 4px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1); letter-spacing: 0.3px;"  th:href="${ssoUrl} + '/forgot-password/reset?token=' + ${token}">
+                                                Neues Passwort vergeben
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div style="margin: 25px 0; padding: 15px; background-color: #fffaf0; border-left: 4px solid #dd6b20; border-radius: 4px; font-size: 0.9rem; color: #7b341e;">
+                                    <strong>⚠️ Du hast diese Anfrage nicht gestellt?</strong><br>
+                                    Falls du dein Passwort nicht zurücksetzen möchtest, kannst du diese E-Mail einfach
+                                    ignorieren. Dein aktuelles Passwort bleibt unverändert gültig. Solltest du vermuten,
+                                    dass jemand unbefugt versucht Zugriff auf deinen Account zu erlangen, informiere
+                                    bitte umgehend das interne Security-Team.
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #f7fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; color: #a0aec0; font-size: 0.75rem;">
+                                <p style="margin: 0 0 4px 0;">Zentraler Identity Provider —
+                                    <span th:text="${companyName}"></span> User Service</p>
+                                <p style="margin: 0;">Dieser Link ist aus Sicherheitsgründen nur für kurze Zeit
+                                    aktiv.</p>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${companyName} + ' - Anwendungen'"></title>
+        <link rel="stylesheet" th:href="@{/css/color.css}"/>
+        <link rel="stylesheet" th:href="@{/css/common.css}"/>
+        <link rel="stylesheet" th:href="@{/css/application-list.css}"/>
+    </head>
+    <body>
+
+        <main>
+            <div class="page-header">
+                <div>
+                    <h2>Registrierte Anwendungen</h2>
+                    <p>Übersicht der Applikationen, die an diesen SSO-Dienst angebunden sind.</p>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <a th:href="@{/selfservice}" class="btn-back">← Zum Selfservice</a>
+                    <a class="btn btn-primary btn-add-app" th:href="@{/applications/new}">+ Neue App</a>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.85rem; height: fit-content;">Abmelden</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <table class="app-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">Optionen</th>
+                            <th>Anwendungsname</th>
+                            <th>Maintainer</th>
+                            <th>Client-ID</th>
+                            <!-- Client-Secret Spalte entfernt, da Hashes nicht in die UI gehören -->
+                            <th>Erstellt am</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="app : ${applications}">
+                            <td>
+                                <div class="options-cell">
+                                    <button class="btn btn-action btn-secondary"
+                                            onclick="document.getElementById(this.getAttribute('data-modal-id')).showModal()"
+                                            th:data-modal-id="'modal_' + ${app.id}"
+                                            type="button">
+                                        Details
+                                    </button>
+
+                                    <form method="post" onsubmit="return confirm('Anwendung wirklich unwiderruflich löschen?');"
+                                            style="display:inline;" th:action="@{/applications/{id}/delete(id=${app.id})}">
+                                        <button class="btn btn-action btn-danger" type="submit">Löschen</button>
+                                    </form>
+                                </div>
+
+                                <dialog class="app-modal" th:id="'modal_' + ${app.id}">
+                                    <div class="modal-header">
+                                        <h3 th:text="${'OIDC Details: ' + app.name}"></h3>
+                                        <button class="btn-close"
+                                                onclick="document.getElementById(this.getAttribute('data-modal-id')).close()"
+                                                th:data-modal-id="'modal_' + ${app.id}"
+                                                type="button">
+                                            ✕
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="detail-group">
+                                            <label>Allowed Scopes:</label>
+                                            <div class="badge-container">
+                                                <span class="badge badge-secondary" th:each="scope : ${app.scopes}" th:text="${scope}"></span>
+                                                <span class="text-muted" th:if="${#lists.isEmpty(app.scopes)}">-</span>
+                                            </div>
+                                        </div>
+                                        <div class="detail-group">
+                                            <label>Grant Types:</label>
+                                            <div class="badge-container">
+                                                <span class="badge badge-success" th:each="grant : ${app.authorizationGrantTypes}" th:text="${grant}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="detail-group">
+                                            <label>Redirect URIs:</label>
+                                            <ul class="uri-list">
+                                                <li th:each="uri : ${app.redirectUris}" th:text="${uri}"></li>
+                                                <li class="text-muted" th:if="${#lists.isEmpty(app.redirectUris)}">Keine
+                                                    Redirect-URIs konfiguriert
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="detail-group">
+                                            <label>Post-Logout Redirect URIs:</label>
+                                            <ul class="uri-list">
+                                                <li th:each="logoutUri : ${app.postLogoutRedirectUris}" th:text="${logoutUri}"></li>
+                                                <li class="text-muted" th:if="${#lists.isEmpty(app.postLogoutRedirectUris)}">
+                                                    -
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </td>
+                            <td class="app-name" th:text="${app.name}"></td>
+                            <td th:text="${app.maintainer}"></td>
+                            <td class="crypto-code" th:text="${app.clientId}"></td>
+                            <!-- th:text="${app.clientSecret}" Zelle entfernt -->
+                            <td th:text="${app.creationDate != null ? #temporals.format(app.creationDate, 'dd.MM.yyyy HH:mm', T(java.time.ZoneId).of('Europe/Berlin')) : '-'}"></td>
+                            <td>
+                                <span th:class="${app.active} ? 'badge badge-success' : 'badge badge-danger'"
+                                        th:text="${app.active} ? 'Aktiv' : 'Inaktiv'">
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(applications)}">
+                            <!-- colspan von 7 auf 6 reduziert, da eine Spalte fehlt -->
+                            <td class="empty-state" colspan="6">
+                                Keine Anwendungen im SSO-System registriert.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+    </body>
+</html>

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # 1. Spring Boot Anwendung (Java 26 / Spring Boot 4)
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "8080:8080"      # App Port
+      - "5005:5005"      # Remote Debugger
+      - "35729:35729"    # LiveReload (DevTools)
+    volumes:
+      - .:/app
+      - gradle-cache:/root/.gradle  # KORRIGIERT: Pfad für den root-User im Temurin-Image
+    environment:
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      # Datenbank-Verbindung (Verweist auf den Service-Namen 'db')
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/company_sso
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=dein_sicherer_datenbank_password
+      # Mailpit-Konfiguration für Spring Boot
+      - SPRING_MAIL_HOST=mailpit
+      - SPRING_MAIL_PORT=1025
+    depends_on:
+      db:
+        condition: service_healthy # Wartet, bis die DB wirklich bereit ist
+
+  # 2. PostgreSQL Datenbank
+  db:
+    image: postgres:17
+    container_name: company-sso-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=company_sso
+      - POSTGRES_PASSWORD=dein_sicherer_datenbank_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d company_sso"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 3. Mailpit (Mail-Server & Web-UI)
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: sso-mailpit
+    ports:
+      - "1025:1025"      # SMTP Port
+      - "8025:8025"      # Web UI Port
+
+volumes:
+  gradle-cache:          # Persistiert geladene .jar Abhängigkeiten
+  postgres-data:         # Verhindert Datenverlust beim Stoppen des Containers

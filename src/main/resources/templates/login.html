@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title th:text="${companyName} + ' - Login'"></title>
+        <link th:href="@{/css/color.css}" rel="stylesheet">
+        <link th:href="@{/css/common.css}" rel="stylesheet">
+        <link th:href="@{/css/login-layout.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="brand-side">
+                <div class="logo-placeholder">
+                    <img alt="Logo" th:src="@{/images/logo.svg}">
+                </div>
+                <h1 th:text="${companyName}"></h1>
+                <p th:text="${slogan}"></p>
+            </div>
+            <div class="form-side">
+                <div class="login-box">
+                    <h2>Bei <span th:text="${companyName}"></span></h2>
+                    <p>Bitte gib deine Zugangsdaten ein, um fortzufahren.</p>
+
+                    <div th:if="${param.error}" class="alert"
+                            th:with="isDeactivated=${#strings.contains(session?.SPRING_SECURITY_LAST_EXCEPTION?.message ?: '', 'deaktiviert')}"
+                            th:classappend="${isDeactivated} ? 'alert-warning' : 'alert-danger'">
+                        <span th:text="${isDeactivated} ? '⚠️ ' : '❌ '"></span>
+                        <span th:text="${session?.SPRING_SECURITY_LAST_EXCEPTION?.message} ?: 'E-Mail-Adresse oder Passwort ungültig.'"></span>
+                    </div>
+
+
+                    <form id="loginForm" method="POST" th:action="@{/login}">
+                        <input type="hidden" name="redirect_uri" th:value="${redirectUri}">
+
+                        <div class="form-group">
+                            <label for="username">E-Mail-Adresse</label>
+                            <input id="username" name="username" placeholder="name@firma.de" required type="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Passwort</label>
+                            <input id="password" name="password" placeholder="••••••••" required type="password">
+                            <a class="forgot-password-link" th:href="@{/forgot-password}">Passwort vergessen?</a>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="2fa-code">2FA Bestätigungscode (Falls aktiv)</label>
+                            <input id="2fa-code" inputmode="numeric" maxlength="6" name="2faCode" pattern="[0-9]*" placeholder="Leer lassen, wenn inaktiv" type="text">
+                        </div>
+
+                        <button class="btn-submit" type="submit">Anmelden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
